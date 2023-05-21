@@ -1,25 +1,77 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import styled from "styled-components";
+import Image from "./images/gamepad.jpeg";
+
+const MainStyledDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+`;
+
+const HomeStyledView = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 50vw;
+  gap: 5vh;
+  position: relative;
+  font-weight: bold;
+  right: 0;
+`;
+
+const StyledImage = styled.img`
+  width: 50vw;
+  height: 100vh;
+  position: relative;
+  left: 0;
+`;
+
+const StyledHeader = styled.h1`
+  color: white;
+  position: relative;
+  top: 2vh;
+  font-size: 3rem;
+`;
+
+const StyledDesc = styled.h3`
+  color: white;
+  font-size: 2rem;
+  text-align: center;
+  padding: 10px;
+`;
+
+const StyledButton = styled.button`
+  height: 8vh;
+  border: 5px solid white;
+  padding: 5px;
+  border-radius: 10px;
+  background: none;
+  color: white;
+  cursor: pointer;
+  font-size: 2rem;
+`;
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <MainStyledDiv>
+      <StyledImage src={Image} alt=""></StyledImage>
+      <HomeStyledView>
+        <StyledHeader>Welcome to the futuristic Minesweeper Game</StyledHeader>
+        <StyledDesc>
+          Minesweeper:
+          <br /> Uncover squares, avoid mines, and use numerical clues to win.
+          <br />
+          Think strategically and clear the grid without detonating any
+          explosives.
+        </StyledDesc>
+        <StyledButton>Learn how to play</StyledButton>
+        <StyledButton>Let's Play</StyledButton>
+      </HomeStyledView>
+    </MainStyledDiv>
   );
 }
 
