@@ -39,31 +39,47 @@ const StyledButton = styled.button`
 `;
 
 const Game = () => {
-  const [game, setGame] = useState({
-    x: [],
-    y: [],
-    z: [],
-    c: [],
-  });
+  const [data, setData] = useState([]);
+  const [game, setGame] = useState([]);
 
-  useEffect(() => {
-    fetch("game/4/8/10").then((res) => res.json());
-  }, []);
-
-  useEffect(() => {
-    fetch("play/tri").then((res) =>
-      res.json().then((game) => {
-        setGame({
-          x: game.x,
-          y: game.y,
-          z: game.z,
-          c: game.c,
-        });
+  const fetchGameData = () => {
+    fetch("/game/8/8/10", {
+      method: "POST",
+      body: JSON.stringify({}),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
       })
-    );
-  }, []);
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
 
-  console.log(game.x, game.y, game.z, game.c);
+  const fetchGame = () => {
+    fetch("/play/tri", {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
+      .then((response) => response.json())
+      .then((game) => {
+        setGame(game);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
+
+  useEffect(() => {
+    fetchGameData();
+    fetchGame();
+    console.log(game);
+  }, []);
 
   return (
     <MainStyledDiv>
