@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
@@ -38,6 +39,32 @@ const StyledButton = styled.button`
 `;
 
 const Game = () => {
+  const [game, setGame] = useState({
+    x: [],
+    y: [],
+    z: [],
+    c: [],
+  });
+
+  useEffect(() => {
+    fetch("game/4/8/10").then((res) => res.json());
+  }, []);
+
+  useEffect(() => {
+    fetch("play/tri").then((res) =>
+      res.json().then((game) => {
+        setGame({
+          x: game.x,
+          y: game.y,
+          z: game.z,
+          c: game.c,
+        });
+      })
+    );
+  }, []);
+
+  console.log(game.x, game.y, game.z, game.c);
+
   return (
     <MainStyledDiv>
       <GameBox></GameBox>
