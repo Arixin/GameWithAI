@@ -1,6 +1,6 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { useState } from "react";
 
 const MainStyledDiv = styled.div`
   display: flex;
@@ -39,93 +39,107 @@ const StyledButton = styled.button`
 `;
 
 const Game = () => {
-  const [data, setData] = useState([]);
-  const [game, setGame] = useState([]);
-  const fetchGameData = () => {
-    fetch("/game/8/8/10", {
-      method: "POST",
-      body: JSON.stringify({}),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-      })
-      .catch((err) => {
-        console.log(err.message);
+  const [triGame, setTriGame] = useState<any>(null);
+  const [hexGame, setHexGame] = useState<any>(null);
+  const [sqGame, setSqGame] = useState<any>(null);
+
+  const fetchGameTri = async () => {
+    try {
+      const response = await fetch("/play/tri", {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
       });
+      const game = await response.json();
+      setTriGame(game.data);
+    } catch (err: any) {
+      console.log(err.message);
+    }
   };
-  const fetchGameTri = () => {
-    fetch("/play/tri", {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    })
-      .then((response) => response.json())
-      .then((game) => {
-        setGame(game);
-      })
-      .catch((err) => {
-        console.log(err.message);
+
+  const fetchGameHex = async () => {
+    try {
+      const response = await fetch("/play/hex", {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
       });
+      const game = await response.json();
+      setHexGame(game.data);
+    } catch (err: any) {
+      console.log(err.message);
+    }
   };
 
-  const fetchGameHex = () => {
-    fetch("/play/hex", {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    })
-      .then((response) => response.json())
-      .then((game) => {
-        setGame(game);
-      })
-      .catch((err) => {
-        console.log(err.message);
+  const fetchGameSq = async () => {
+    try {
+      const response = await fetch("/play/sq", {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
       });
+      const game = await response.json();
+      setSqGame(game.data);
+    } catch (err: any) {
+      console.log(err.message);
+    }
   };
 
-  const fetchGameSq = () => {
-    fetch("/play/sq", {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    })
-      .then((response) => response.json())
-      .then((game) => {
-        setGame(game);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
+  const TriGame = async () => {
+    await fetchGameTri();
+    console.log(triGame);
   };
 
-  const TriGame = () => {
-    fetchGameData();
-    fetchGameTri();
-    console.log(game);
+  const SqGame = async () => {
+    await fetchGameSq();
+    console.log(sqGame);
   };
 
-  const SqGame = () => {
-    fetchGameData();
-    fetchGameSq();
-    console.log(game);
-  };
-
-  const HexGame = () => {
-    fetchGameData();
-    fetchGameHex();
-    console.log(game);
+  const HexGame = async () => {
+    await fetchGameHex();
+    console.log(hexGame);
   };
 
   return (
     <MainStyledDiv>
-      <GameBox></GameBox>
+      <GameBox>
+        {triGame !== null ? (
+          triGame.length > 0 ? (
+            triGame.map((item: string, index: number) => (
+              <button key={index}>{item}</button>
+            ))
+          ) : (
+            <p>No game data available</p>
+          )
+        ) : (
+          <p>No data</p>
+        )}
+        {/* {hexGame !== null ? (
+          hexGame.length > 0 ? (
+            hexGame.map((item: string, index: number) => (
+              <button key={index}>{item}</button>
+            ))
+          ) : (
+            <p>No game data available</p>
+          )
+        ) : (
+          <p>No data</p>
+        )}
+        {sqGame !== null ? (
+          sqGame.length > 0 ? (
+            sqGame.map((item: string, index: number) => (
+              <button key={index}>{item}</button>
+            ))
+          ) : (
+            <p>No game data available</p>
+          )
+        ) : (
+          <p>No data</p>
+        )} */}
+      </GameBox>
       <Box>
         <Link to="/about">
           <StyledButton>Learn how to play</StyledButton>
