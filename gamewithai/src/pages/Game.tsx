@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
@@ -41,7 +41,6 @@ const StyledButton = styled.button`
 const Game = () => {
   const [data, setData] = useState([]);
   const [game, setGame] = useState([]);
-
   const fetchGameData = () => {
     fetch("/game/8/8/10", {
       method: "POST",
@@ -58,8 +57,7 @@ const Game = () => {
         console.log(err.message);
       });
   };
-
-  const fetchGame = () => {
+  const fetchGameTri = () => {
     fetch("/play/tri", {
       method: "GET",
       headers: {
@@ -75,11 +73,55 @@ const Game = () => {
       });
   };
 
-  useEffect(() => {
+  const fetchGameHex = () => {
+    fetch("/play/hex", {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
+      .then((response) => response.json())
+      .then((game) => {
+        setGame(game);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
+
+  const fetchGameSq = () => {
+    fetch("/play/sq", {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
+      .then((response) => response.json())
+      .then((game) => {
+        setGame(game);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
+
+  const TriGame = () => {
     fetchGameData();
-    fetchGame();
+    fetchGameTri();
     console.log(game);
-  }, []);
+  };
+
+  const SqGame = () => {
+    fetchGameData();
+    fetchGameSq();
+    console.log(game);
+  };
+
+  const HexGame = () => {
+    fetchGameData();
+    fetchGameHex();
+    console.log(game);
+  };
 
   return (
     <MainStyledDiv>
@@ -88,9 +130,9 @@ const Game = () => {
         <Link to="/about">
           <StyledButton>Learn how to play</StyledButton>
         </Link>
-        <StyledButton>Hex mode</StyledButton>
-        <StyledButton>Triangle mode</StyledButton>
-        <StyledButton>Normal mode</StyledButton>
+        <StyledButton onClick={HexGame}>Hex mode</StyledButton>
+        <StyledButton onClick={TriGame}>Triangle mode</StyledButton>
+        <StyledButton onClick={SqGame}>Normal mode</StyledButton>
       </Box>
     </MainStyledDiv>
   );
