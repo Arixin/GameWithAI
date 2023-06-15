@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const MainStyledDiv = styled.div`
   display: flex;
@@ -57,6 +57,28 @@ const Game = () => {
       console.log(err.message);
     }
   };
+
+  const fetchGame = () => {
+    fetch("game/8/8/10", {
+      method: "POST",
+      body: JSON.stringify({}),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
+      .then((response) => response.json())
+      .then((game) => {
+        console.log("done");
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
+
+  useEffect(() => {
+    fetchGame();
+    console.log("Done");
+  }, []);
 
   const fetchGameHex = async () => {
     try {

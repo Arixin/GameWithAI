@@ -60,7 +60,7 @@ class Sapper:
                                 count += 1
 
                     if count == 0:
-                        count = " "
+                        count = "0"
                     self.board[i][j] = str(count)
 
     def play(self, type):
