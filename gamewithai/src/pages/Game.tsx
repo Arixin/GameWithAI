@@ -130,9 +130,9 @@ const Game = () => {
         <Link to="/about">
           <StyledButton>Learn how to play</StyledButton>
         </Link>
-        <StyledButton onClick={HexGame}>Hex mode</StyledButton>
-        <StyledButton onClick={TriGame}>Triangle mode</StyledButton>
         <StyledButton onClick={SqGame}>Normal mode</StyledButton>
+        <StyledButton onClick={TriGame}>Triangle mode</StyledButton>
+        <StyledButton onClick={HexGame}>Hex mode</StyledButton>
       </Box>
     </MainStyledDiv>
   );
