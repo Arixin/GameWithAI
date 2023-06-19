@@ -26,6 +26,9 @@ const GameBox = styled.div`
   width: 70vw;
   height: 90vh;
   border: solid 1px white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const StyledButton = styled.button`
@@ -38,10 +41,49 @@ const StyledButton = styled.button`
   font-size: 2rem;
 `;
 
+const SqGameButton = styled.button`
+  width: 8vw;
+  height: 10vh;
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: #ffffff;
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  transition: background-color 0.3s;
+  cursor: pointer;
+  border: 1px solid grey;
+`;
+
+const TriGameButton = styled.button`
+  width: 8vw;
+  height: 10vh;
+  border-top: 50px solid transparent;
+  border-bottom: 50px solid transparent;
+  border-right: 100px solid #4caf50;
+  color: #ffffff;
+  text-align: center;
+  line-height: 100px;
+  font-size: 16px;
+  transition: background-color 0.3s;
+  cursor: pointer;
+`;
+
+const HexGameButton = styled.button`
+  width: 100px;
+  height: 58px;
+  background-color: #4caf50;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+`;
+
 const Game = () => {
   const [triGame, setTriGame] = useState<any>(null);
   const [hexGame, setHexGame] = useState<any>(null);
   const [sqGame, setSqGame] = useState<any>(null);
+  const [gameCheck, setGameCheck] = useState(0);
 
   const fetchGameTri = async () => {
     try {
@@ -67,9 +109,7 @@ const Game = () => {
       },
     })
       .then((response) => response.json())
-      .then((game) => {
-        console.log("done");
-      })
+      .then((game) => {})
       .catch((err) => {
         console.log(err.message);
       });
@@ -77,7 +117,6 @@ const Game = () => {
 
   useEffect(() => {
     fetchGame();
-    console.log("Done");
   }, []);
 
   const fetchGameHex = async () => {
@@ -113,54 +152,77 @@ const Game = () => {
   const TriGame = async () => {
     await fetchGameTri();
     console.log(triGame);
+    setGameCheck(3);
   };
 
   const SqGame = async () => {
     await fetchGameSq();
     console.log(sqGame);
+    setGameCheck(1);
   };
 
   const HexGame = async () => {
     await fetchGameHex();
     console.log(hexGame);
+    setGameCheck(2);
   };
 
   return (
     <MainStyledDiv>
       <GameBox>
-        {triGame !== null ? (
-          triGame.length > 0 ? (
-            triGame.map((item: string, index: number) => (
-              <button key={index}>{item}</button>
-            ))
-          ) : (
-            <p>No game data available</p>
-          )
-        ) : (
-          <p>No data</p>
+        {gameCheck === 1 && (
+          <div>
+            {sqGame !== null ? (
+              sqGame.length > 0 ? (
+                sqGame.map((item: Array<string>) =>
+                  item.map((item: string, index: number) => (
+                    <SqGameButton key={index}>{item}</SqGameButton>
+                  ))
+                )
+              ) : (
+                <p>No game data available</p>
+              )
+            ) : (
+              <p>No data</p>
+            )}
+          </div>
         )}
-        {/* {hexGame !== null ? (
-          hexGame.length > 0 ? (
-            hexGame.map((item: string, index: number) => (
-              <button key={index}>{item}</button>
-            ))
-          ) : (
-            <p>No game data available</p>
-          )
-        ) : (
-          <p>No data</p>
+
+        {gameCheck === 2 && (
+          <div>
+            {hexGame !== null ? (
+              hexGame.length > 0 ? (
+                hexGame.map((item: Array<string>) =>
+                  item.map((item: string, index: number) => (
+                    <HexGameButton key={index}>{item}</HexGameButton>
+                  ))
+                )
+              ) : (
+                <p>No game data available</p>
+              )
+            ) : (
+              <p>No data</p>
+            )}
+          </div>
         )}
-        {sqGame !== null ? (
-          sqGame.length > 0 ? (
-            sqGame.map((item: string, index: number) => (
-              <button key={index}>{item}</button>
-            ))
-          ) : (
-            <p>No game data available</p>
-          )
-        ) : (
-          <p>No data</p>
-        )} */}
+
+        {gameCheck === 3 && (
+          <div>
+            {triGame !== null ? (
+              triGame.length > 0 ? (
+                triGame.map((item: Array<string>) =>
+                  item.map((item: string, index: number) => (
+                    <TriGameButton key={index}>{item}</TriGameButton>
+                  ))
+                )
+              ) : (
+                <p>No game data available</p>
+              )
+            ) : (
+              <p>No data</p>
+            )}
+          </div>
+        )}
       </GameBox>
       <Box>
         <Link to="/about">
