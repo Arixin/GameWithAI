@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
+import "../App.css";
 
 const MainStyledDiv = styled.div`
   display: flex;
@@ -54,29 +55,6 @@ const SqGameButton = styled.button`
   transition: background-color 0.3s;
   cursor: pointer;
   border: 1px solid grey;
-`;
-
-const TriGameButton = styled.button`
-  width: 8vw;
-  height: 10vh;
-  border-top: 50px solid transparent;
-  border-bottom: 50px solid transparent;
-  border-right: 100px solid #4caf50;
-  color: #ffffff;
-  text-align: center;
-  line-height: 100px;
-  font-size: 16px;
-  transition: background-color 0.3s;
-  cursor: pointer;
-`;
-
-const HexGameButton = styled.button`
-  width: 100px;
-  height: 58px;
-  background-color: #4caf50;
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
 `;
 
 const Game = () => {
@@ -189,20 +167,22 @@ const Game = () => {
         )}
 
         {gameCheck === 2 && (
-          <div>
-            {hexGame !== null ? (
-              hexGame.length > 0 ? (
-                hexGame.map((item: Array<string>) =>
-                  item.map((item: string, index: number) => (
-                    <HexGameButton key={index}>{item}</HexGameButton>
-                  ))
+          <div className="main">
+            <div className="container">
+              {hexGame !== null ? (
+                hexGame.length > 0 ? (
+                  hexGame.map((item: Array<string>) =>
+                    item.map((item: string, index: number) => (
+                      <button key={index}>{item}</button>
+                    ))
+                  )
+                ) : (
+                  <p>No game data available</p>
                 )
               ) : (
-                <p>No game data available</p>
-              )
-            ) : (
-              <p>No data</p>
-            )}
+                <p>No data</p>
+              )}
+            </div>
           </div>
         )}
 
@@ -212,7 +192,7 @@ const Game = () => {
               triGame.length > 0 ? (
                 triGame.map((item: Array<string>) =>
                   item.map((item: string, index: number) => (
-                    <TriGameButton key={index}>{item}</TriGameButton>
+                    <SqGameButton key={index}>{item}</SqGameButton>
                   ))
                 )
               ) : (
