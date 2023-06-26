@@ -30,6 +30,7 @@ const GameBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 0;
 `;
 
 const StyledButton = styled.button`
@@ -51,32 +52,33 @@ const SqGameButton = styled.button`
   color: #ffffff;
   text-align: center;
   text-decoration: none;
-  border: none;
-  transition: background-color 0.3s;
   cursor: pointer;
   border: 1px solid grey;
 `;
 
 const Game = () => {
-  const [triGame, setTriGame] = useState<any>(null);
+  // const [triGame, setTriGame] = useState<any>(null);
   const [hexGame, setHexGame] = useState<any>(null);
   const [sqGame, setSqGame] = useState<any>(null);
   const [gameCheck, setGameCheck] = useState(0);
+  const [clickCheck, setClickCheck] = useState<number>(0);
+  const [clickedIndex1, setClickedIndex1] = useState<number | null>(null);
+  const [clickedIndex2, setClickedIndex2] = useState<number | null>(null);
 
-  const fetchGameTri = async () => {
-    try {
-      const response = await fetch("/play/tri", {
-        method: "GET",
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      });
-      const game = await response.json();
-      setTriGame(game.data);
-    } catch (err: any) {
-      console.log(err.message);
-    }
-  };
+  // const fetchGameTri = async () => {
+  //   try {
+  //     const response = await fetch("/play/tri", {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-type": "application/json; charset=UTF-8",
+  //       },
+  //     });
+  //     const game = await response.json();
+  //     setTriGame(game.data);
+  //   } catch (err: any) {
+  //     console.log(err.message);
+  //   }
+  // };
 
   const fetchGame = () => {
     fetch("game/8/8/10", {
@@ -127,22 +129,29 @@ const Game = () => {
     }
   };
 
-  const TriGame = async () => {
-    await fetchGameTri();
-    console.log(triGame);
-    setGameCheck(3);
-  };
+  // const TriGame = async () => {
+  //   await fetchGameTri();
+  //   console.log(triGame);
+  //   setGameCheck(3);
+  // };
 
   const SqGame = async () => {
     await fetchGameSq();
     console.log(sqGame);
     setGameCheck(1);
+    setClickCheck(0);
   };
 
   const HexGame = async () => {
     await fetchGameHex();
     console.log(hexGame);
     setGameCheck(2);
+  };
+
+  const setClick = (click: number, index1: number, index2: number) => {
+    setClickCheck(click);
+    setClickedIndex1(index1);
+    setClickedIndex2(index2);
   };
 
   return (
@@ -152,16 +161,27 @@ const Game = () => {
           <div>
             {sqGame !== null ? (
               sqGame.length > 0 ? (
-                sqGame.map((item: Array<string>) =>
-                  item.map((item: string, index: number) => (
-                    <SqGameButton key={index}>{item}</SqGameButton>
-                  ))
+                sqGame.map((item: Array<string>, outerIndex: number) =>
+                  item.map((item: string, innerIndex: number) =>
+                    clickCheck === 1 &&
+                    innerIndex === clickedIndex1 &&
+                    outerIndex === clickedIndex2 ? (
+                      <SqGameButton className="sqButton" key={innerIndex}>
+                        {item}
+                      </SqGameButton>
+                    ) : (
+                      <SqGameButton
+                        key={innerIndex}
+                        onClick={() => setClick(1, innerIndex, outerIndex)}
+                      ></SqGameButton>
+                    )
+                  )
                 )
               ) : (
-                <p>No game data available</p>
+                <p></p>
               )
             ) : (
-              <p>No data</p>
+              <p></p>
             )}
           </div>
         )}
@@ -186,14 +206,12 @@ const Game = () => {
           </div>
         )}
 
-        {gameCheck === 3 && (
+        {/* {gameCheck === 3 && (
           <div>
             {triGame !== null ? (
               triGame.length > 0 ? (
                 triGame.map((item: Array<string>) =>
-                  item.map((item: string, index: number) => (
-                    <SqGameButton key={index}>{item}</SqGameButton>
-                  ))
+                  item.map((item: string, index: number) => ({}))
                 )
               ) : (
                 <p>No game data available</p>
@@ -202,14 +220,14 @@ const Game = () => {
               <p>No data</p>
             )}
           </div>
-        )}
+        )} */}
       </GameBox>
       <Box>
         <Link to="/about">
           <StyledButton>Learn how to play</StyledButton>
         </Link>
         <StyledButton onClick={SqGame}>Normal mode</StyledButton>
-        <StyledButton onClick={TriGame}>Triangle mode</StyledButton>
+        {/* <StyledButton onClick={TriGame}>Triangle mode</StyledButton> */}
         <StyledButton onClick={HexGame}>Hex mode</StyledButton>
       </Box>
     </MainStyledDiv>

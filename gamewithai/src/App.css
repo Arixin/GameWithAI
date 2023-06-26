@@ -36,3 +36,7 @@
                    #000  0 var(--f));
 }
 
+.sqButton{
+  appearance: none;
+}
+
